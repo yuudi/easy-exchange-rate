@@ -1,10 +1,21 @@
 <mat-toolbar color="primary">
-    <span>Easy Exchange Rate</span>
-    <span class="spacer"></span>
-    <button mat-icon-button>
-        <mat-icon fontIcon="settings" />
-    </button>
-    <button mat-icon-button>
-        <mat-icon fontIcon="share" />
-    </button>
+  <span i18n>Easy Exchange Rate</span>
+  <span class="spacer"></span>
+  <button mat-icon-button>
+    <mat-icon fontIcon="settings" />
+  </button>
+  <button mat-icon-button>
+    <mat-icon fontIcon="share" />
+  </button>
 </mat-toolbar>
+<mat-list *ngFor="let c of currencyList">
+  <mat-list-item>
+    <app-currency
+      [name]="c"
+      [rate]="currencyRate[c]"
+      [(valueUSD)]="valueUSD"
+      [(empty)]="empty"
+    />
+  </mat-list-item>
+</mat-list>
+<button i18n mat-button color="primary" (click)="clearClicked()">clear</button>

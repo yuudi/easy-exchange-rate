@@ -1,0 +1,12 @@
+{{ name }}
+<mat-form-field>
+  <input
+    type="number"
+    matInput
+    [disabled]="rate === undefined"
+    [placeholder]="placeholder"
+    [(ngModel)]="value"
+    (input)="valueChanged()"
+    (focus)="fieldFocused()"
+  />
+</mat-form-field>
