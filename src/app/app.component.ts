@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ListComponent } from './list/list.component';
 
 type RATES = { [key: string]: number };
 
@@ -9,14 +11,23 @@ type RATES = { [key: string]: number };
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  // Hard code for now
-  currencyList = ['USD', 'CNY', 'JPY', 'HKD', 'TWD', 'EUR'];
+  currencyList: string[] = [];
   currencyRate: RATES = {};
   valueUSD = 100;
   empty = true;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private dialog: MatDialog,
+  ) {}
   ngOnInit() {
+    const currencyJson = localStorage.getItem('CURRENCY');
+    if (currencyJson !== null) {
+      this.currencyList = JSON.parse(currencyJson);
+    } else {
+      this.currencyList = ['USD', 'EUR', 'JPY', 'CNY', 'KRW', 'HKD', 'TWD'];
+    }
+
     const rateJson = localStorage.getItem('RATES');
     let rate: {
       updated: number;
@@ -35,14 +46,19 @@ export class AppComponent implements OnInit {
         .get<{ updated: number; rates: RATES }>(
           'https://api.exchange-rate.yuudi.dev/exchange-rate.json',
         )
-        .subscribe(({ updated, rates }) => {
-          this.currencyRate = rates;
-          rate = {
-            updated,
-            fetched: now,
-            rates,
-          };
-          localStorage.setItem('RATES', JSON.stringify(rate));
+        .subscribe({
+          next: ({ updated, rates }) => {
+            this.currencyRate = rates;
+            rate = {
+              updated,
+              fetched: now,
+              rates,
+            };
+            localStorage.setItem('RATES', JSON.stringify(rate));
+          },
+          error: () => {
+            alert('Failed to fetch exchange rate');
+          },
         });
     }
   }
@@ -52,5 +68,29 @@ export class AppComponent implements OnInit {
   clearClicked() {
     this.valueUSD = 100;
     this.empty = true;
+  }
+  settingsClicked() {
+    const dialog = this.dialog.open(ListComponent, {
+      data: {
+        list: this.currencyList.slice(), // shallow copy
+        available: Object.keys(this.currencyRate),
+      },
+      width: '100%',
+      maxWidth: '30em',
+    });
+    dialog.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result !== undefined) {
+        this.currencyList = result;
+        localStorage.setItem('CURRENCY', JSON.stringify(result));
+      }
+    });
+  }
+  shareClicked() {
+    navigator.share({
+      title: 'Easy Exchange Rate',
+      url: window.location.href,
+    });
   }
 }

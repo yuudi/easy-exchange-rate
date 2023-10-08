@@ -1,0 +1,35 @@
+<h3 mat-dialog-title i18n>Currency List</h3>
+<div mat-dialog-content>
+  <mat-list cdkDropList (cdkDropListDropped)="drop($event)" class="list">
+    <mat-list-item
+      class="drag"
+      *ngFor="let c of data.list; let i = index"
+      cdkDrag
+    >
+      <div class="item">
+        <mat-icon fontIcon="drag_handle" cdkDragHandle></mat-icon>
+        {{ c }}
+        <span class="spacer"></span>
+        <button mat-icon-button color="warn" (click)="delete(i)">
+          <mat-icon fontIcon="close"></mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <button i18n mat-stroked-button color="primary" [matMenuTriggerFor]="menu">
+    Add
+  </button>
+  <mat-menu #menu="matMenu">
+    <button
+      mat-menu-item
+      *ngFor="let opt of data.available"
+      [disabled]="data.list.includes(opt)"
+      (click)="add(opt)"
+    >
+      {{ opt }}
+    </button>
+  </mat-menu>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data.list" i18n>Ok</button>
+</div>

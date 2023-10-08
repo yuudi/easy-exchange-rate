@@ -1,0 +1,14 @@
+.drag {
+  width: 100%;
+  border-bottom: solid 1px #ccc;
+  cursor: move;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1;
+}
