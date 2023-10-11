@@ -79,8 +79,6 @@ export class AppComponent implements OnInit {
       maxWidth: '30em',
     });
     dialog.afterClosed().subscribe((result) => {
-      console.log(result);
-
       if (result !== undefined) {
         this.currencyList = result;
         localStorage.setItem('CURRENCY', JSON.stringify(result));
