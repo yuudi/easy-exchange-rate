@@ -9,6 +9,7 @@
   </button>
 </mat-toolbar>
 <div class="main">
+  <div i18n>updated {{ lastUpdated | timeInterval }}</div>
   <mat-list *ngFor="let c of currencyList">
     <mat-list-item>
       <app-currency

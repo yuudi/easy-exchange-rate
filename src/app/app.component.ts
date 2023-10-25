@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   currencyRate: RATES = {};
   valueUSD = 100;
   empty = true;
+  lastUpdated = 0;
 
   constructor(
     private http: HttpClient,
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
     if (rateJson !== null) {
       rate = JSON.parse(rateJson);
       this.currencyRate = rate.rates;
+      this.lastUpdated = rate.updated;
     } else {
       rate = { updated: 0, fetched: 0, rates: {} };
     }
@@ -49,6 +51,7 @@ export class AppComponent implements OnInit {
         .subscribe({
           next: ({ updated, rates }) => {
             this.currencyRate = rates;
+            this.lastUpdated = updated;
             rate = {
               updated,
               fetched: now,

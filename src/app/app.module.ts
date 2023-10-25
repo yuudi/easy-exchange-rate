@@ -16,6 +16,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app.component';
 import { CurrencyComponent } from './currency/currency.component';
 import { ListComponent } from './list/list.component';
+import { TimeIntervalPipe } from './time-interval.pipe';
 
 const serviceWorkerModuleWithProvider = ServiceWorkerModule.register(
   'ngsw-worker.js',
@@ -28,7 +29,12 @@ const serviceWorkerModuleWithProvider = ServiceWorkerModule.register(
 );
 
 @NgModule({
-  declarations: [AppComponent, CurrencyComponent, ListComponent],
+  declarations: [
+    AppComponent,
+    CurrencyComponent,
+    ListComponent,
+    TimeIntervalPipe,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
