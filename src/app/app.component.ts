@@ -5,6 +5,12 @@ import { ListComponent } from './list/list.component';
 
 type RATES = { [key: string]: number };
 
+// This is a non-standard event, only available in Chrome
+// It is not in the TypeScript definition
+// https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type BeforeInstallPrompt = any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,11 +22,23 @@ export class AppComponent implements OnInit {
   valueUSD = 100;
   empty = true;
   lastUpdated = 0;
+  installable = false;
+  isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  installFunc = () => {};
 
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-  ) {}
+  ) {
+    window.addEventListener('beforeinstallprompt', (e: BeforeInstallPrompt) => {
+      e.preventDefault();
+      this.installable = true;
+      this.installFunc = () => {
+        this.installable = false;
+        e.prompt();
+      };
+    });
+  }
   ngOnInit() {
     const currencyJson = localStorage.getItem('CURRENCY');
     if (currencyJson !== null) {
@@ -71,6 +89,9 @@ export class AppComponent implements OnInit {
   clearClicked() {
     this.valueUSD = 100;
     this.empty = true;
+  }
+  installClicked() {
+    this.installFunc();
   }
   settingsClicked() {
     const dialog = this.dialog.open(ListComponent, {

@@ -1,6 +1,9 @@
 <mat-toolbar color="primary">
   <span i18n>Easy Exchange Rate</span>
   <span class="spacer"></span>
+  <button *ngIf="installable" mat-icon-button (click)="installClicked()">
+    <mat-icon [fontIcon]="isMobile ? 'install_mobile' : 'install_desktop'" />
+  </button>
   <button mat-icon-button (click)="settingsClicked()">
     <mat-icon fontIcon="settings" />
   </button>
