@@ -63,9 +63,10 @@ export class AppComponent implements OnInit {
     const now = +new Date() / 1000;
     if (now - rate.updated > 86400 && now - rate.fetched > 3600) {
       this.http
-        .get<{ updated: number; rates: RATES }>(
-          'https://api.exchange-rate.yuudi.dev/exchange-rate.json',
-        )
+        .get<{
+          updated: number;
+          rates: RATES;
+        }>('https://api.exchange-rate.yuudi.dev/exchange-rate.json')
         .subscribe({
           next: ({ updated, rates }) => {
             this.currencyRate = rates;
