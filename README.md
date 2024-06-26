@@ -13,13 +13,13 @@
 
 ### preset values
 
-append optional query params to the url
+append optional query params to the url with `#`
 
 - `fromCurrency`: fromCurrency
 - `value`: value
 - `toCurrency`: toCurrency, separated by comma
 
 
-e.g. `https://exchange-rate.yuudi.dev/?fromCurrency=CNY&value=648&toCurrency=USD,JPY`
+e.g. `https://exchange-rate.yuudi.dev/#?fromCurrency=CNY&value=648&toCurrency=USD,JPY`
 
 </details>

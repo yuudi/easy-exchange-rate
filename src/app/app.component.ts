@@ -92,27 +92,38 @@ export class AppComponent implements OnInit {
   }
   private getPresetValue() {
     // Get value from uri
-    const uri = new URL(location.href);
-    const value = uri.searchParams.get('value');
-    const fromCurrency = uri.searchParams.get('fromCurrency');
-    if (value !== null && fromCurrency !== null) {
-      if (!this.currencyList.includes(fromCurrency)) {
-        this.tmpCurrencyList.push(fromCurrency);
-      }
-      this.valueUSD = +value / this.currencyRate[fromCurrency];
-      this.empty = false;
-      const toCurrency = uri.searchParams.get('toCurrency');
-      if (toCurrency !== null) {
-        const toCurrentList = toCurrency.split(',');
-        toCurrentList.forEach((currency) => {
-          if (!this.currencyList.includes(currency)) {
-            this.tmpCurrencyList.push(currency);
-          }
-        });
-      }
-      // clear the uri search params
-      history.replaceState(null, '', location.pathname);
+    const fragment = window.location.hash;
+    const query = fragment.split('?')[1];
+    if (!query) {
+      return;
     }
+    const queryParams: { [key: string]: string | undefined } = {};
+    query.split('&').forEach((pair) => {
+      const [key, value] = pair.split('=');
+      queryParams[key] = value;
+    });
+    const value = queryParams['value'];
+    const fromCurrency = queryParams['fromCurrency'];
+    if (!fromCurrency) {
+      return;
+    }
+    if (Object.hasOwn(this.currencyRate, fromCurrency)) {
+      this.tmpCurrencyList.push(fromCurrency);
+    }
+    const currencyValue = value ? +value : 100;
+    this.valueUSD = currencyValue / this.currencyRate[fromCurrency];
+    this.empty = false;
+    const toCurrency = queryParams['toCurrency'];
+    if (toCurrency) {
+      const toCurrentList = toCurrency.split(',');
+      toCurrentList.forEach((currency) => {
+        if (Object.hasOwn(this.currencyRate, currency)) {
+          this.tmpCurrencyList.push(currency);
+        }
+      });
+    }
+    // clear the uri hash
+    history.replaceState(null, '', window.location.href.split("#")[0]);
   }
   valueChanged(value: number) {
     this.valueUSD = value;

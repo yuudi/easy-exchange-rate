@@ -13,8 +13,24 @@
 </mat-toolbar>
 <div class="main">
   <div i18n>updated {{ lastUpdated | timeInterval }}</div>
-  <mat-list *ngFor="let c of tmpCurrencyList.concat(currencyList)">
-    <mat-list-item>
+  <button i18n mat-button color="primary" (click)="clearClicked()">
+    clear
+  </button>
+  <mat-list>
+    <ng-container *ngIf="tmpCurrencyList.length">
+      <h3 matSubheader i18n>Your Currencies</h3>
+      <mat-list-item *ngFor="let c of tmpCurrencyList" class="currencyShowBox">
+        <app-currency
+          [name]="c"
+          [rate]="currencyRate[c]"
+          [(valueUSD)]="valueUSD"
+          [(empty)]="empty"
+        />
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+      <h3 mat-subheader i18n>More Currencies</h3>
+    </ng-container>
+    <mat-list-item *ngFor="let c of currencyList" class="currencyShowBox">
       <app-currency
         [name]="c"
         [rate]="currencyRate[c]"
@@ -23,7 +39,13 @@
       />
     </mat-list-item>
   </mat-list>
-  <button i18n mat-button color="primary" (click)="clearClicked()">
+  <button
+    *ngIf="tmpCurrencyList.length + currencyList.length >= 10"
+    i18n
+    mat-button
+    color="primary"
+    (click)="clearClicked()"
+  >
     clear
   </button>
 </div>
