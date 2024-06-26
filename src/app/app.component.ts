@@ -17,6 +17,7 @@ type BeforeInstallPrompt = any;
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  tmpCurrencyList: string[] = [];
   currencyList: string[] = [];
   currencyRate: RATES = {};
   valueUSD = 100;
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit() {
+    // Load currency list and exchange rate from localStorage
     const currencyJson = localStorage.getItem('CURRENCY');
     if (currencyJson !== null) {
       this.currencyList = JSON.parse(currencyJson);
@@ -61,6 +63,7 @@ export class AppComponent implements OnInit {
       rate = { updated: 0, fetched: 0, rates: {} };
     }
     const now = +new Date() / 1000;
+    // Fetch exchange rate if it is older than 1 day
     if (now - rate.updated > 86400 && now - rate.fetched > 3600) {
       this.http
         .get<{
@@ -77,11 +80,38 @@ export class AppComponent implements OnInit {
               rates,
             };
             localStorage.setItem('RATES', JSON.stringify(rate));
+            this.getPresetValue();
           },
           error: () => {
             alert('Failed to fetch exchange rate');
           },
         });
+    } else {
+      this.getPresetValue();
+    }
+  }
+  private getPresetValue() {
+    // Get value from uri
+    const uri = new URL(location.href);
+    const value = uri.searchParams.get('value');
+    const fromCurrency = uri.searchParams.get('fromCurrency');
+    if (value !== null && fromCurrency !== null) {
+      if (!this.currencyList.includes(fromCurrency)) {
+        this.tmpCurrencyList.push(fromCurrency);
+      }
+      this.valueUSD = +value / this.currencyRate[fromCurrency];
+      this.empty = false;
+      const toCurrency = uri.searchParams.get('toCurrency');
+      if (toCurrency !== null) {
+        const toCurrentList = toCurrency.split(',');
+        toCurrentList.forEach((currency) => {
+          if (!this.currencyList.includes(currency)) {
+            this.tmpCurrencyList.push(currency);
+          }
+        });
+      }
+      // clear the uri search params
+      history.replaceState(null, '', location.pathname);
     }
   }
   valueChanged(value: number) {
