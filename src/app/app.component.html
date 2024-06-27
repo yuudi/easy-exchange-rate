@@ -19,21 +19,25 @@
   <ng-container *ngIf="tmpCurrencyList.length">
     <h3 matSubheader i18n>Your Currencies</h3>
     <app-currency
-      *ngFor="let c of tmpCurrencyList"
+      *ngFor="let c of tmpCurrencyList; let i = index"
       [code]="c"
       [rate]="currencyRate[c]"
       [(valueUSD)]="valueUSD"
       [(empty)]="empty"
+      (choose)="focus = -1 - i"
+      [show_close]="focus === -1 - i"
     />
     <mat-divider [inset]="true"></mat-divider>
     <h3 mat-subheader i18n>More Currencies</h3>
   </ng-container>
   <app-currency
-    *ngFor="let c of currencyList"
+    *ngFor="let c of currencyList; let i = index"
     [code]="c"
     [rate]="currencyRate[c]"
     [(valueUSD)]="valueUSD"
     [(empty)]="empty"
+    (choose)="focus = i"
+    [show_close]="focus === i"
   />
   <button
     *ngIf="tmpCurrencyList.length + currencyList.length >= 10"

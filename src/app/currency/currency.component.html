@@ -10,4 +10,13 @@
     (input)="valueChanged()"
     (focus)="fieldFocused()"
   />
+  <button
+    *ngIf="show_close && value !== null"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="value = null; valueChanged()"
+  >
+    <mat-icon fontIcon="close"></mat-icon>
+  </button>
 </mat-form-field>

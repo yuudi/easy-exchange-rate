@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   currencyRate: RATES = {};
   valueUSD = 100;
   empty = true;
+  focus: number | null = null;
   lastUpdated = 0;
   installable = false;
   isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

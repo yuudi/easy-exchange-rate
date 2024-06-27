@@ -19,6 +19,8 @@ export class CurrencyComponent implements OnChanges {
   @Input() empty = true;
   @Output() emptyChange = new EventEmitter<boolean>();
   @Input() decimal_places = 10000;
+  @Input() show_close = false;
+  @Output() choose = new EventEmitter<void>();
 
   value: number | null = null;
   placeholder = '';
@@ -50,10 +52,8 @@ export class CurrencyComponent implements OnChanges {
     }
   }
   fieldFocused() {
-    if (this.rate === undefined) {
-      return;
-    }
-    if (this.empty) {
+    this.choose.emit();
+    if (this.rate !== undefined && this.empty) {
       this.valueUSDChange.emit(100 / this.rate);
     }
   }
