@@ -8,7 +8,7 @@
     >
       <div class="item">
         <mat-icon fontIcon="drag_handle" cdkDragHandle></mat-icon>
-        {{ c }}
+        {{ c }} - {{ c | currencyName | async }}
         <span class="spacer"></span>
         <button mat-icon-button color="warn" (click)="delete(i)">
           <mat-icon fontIcon="close"></mat-icon>
@@ -22,11 +22,11 @@
   <mat-menu #menu="matMenu">
     <button
       mat-menu-item
-      *ngFor="let opt of data.available"
-      [disabled]="data.list.includes(opt)"
-      (click)="add(opt)"
+      *ngFor="let codeOption of data.available"
+      [disabled]="data.list.includes(codeOption)"
+      (click)="add(codeOption)"
     >
-      {{ opt }}
+      {{ codeOption }} - {{ codeOption | currencyName | async }}
     </button>
   </mat-menu>
 </div>

@@ -12,7 +12,7 @@ import {
   styleUrls: ['./currency.component.scss'],
 })
 export class CurrencyComponent implements OnChanges {
-  @Input() name = '';
+  @Input() code = '';
   @Input() rate? = 1;
   @Input() valueUSD = 0;
   @Output() valueUSDChange = new EventEmitter<number>();

@@ -123,7 +123,7 @@ export class AppComponent implements OnInit {
       });
     }
     // clear the uri hash
-    history.replaceState(null, '', window.location.href.split("#")[0]);
+    history.replaceState(null, '', window.location.href.split('#')[0]);
   }
   valueChanged(value: number) {
     this.valueUSD = value;
@@ -135,7 +135,7 @@ export class AppComponent implements OnInit {
   installClicked() {
     this.installFunc();
   }
-  settingsClicked() {
+  editClicked() {
     const dialog = this.dialog.open(ListComponent, {
       data: {
         list: this.currencyList.slice(), // shallow copy

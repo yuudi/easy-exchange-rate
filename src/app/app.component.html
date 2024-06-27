@@ -4,8 +4,8 @@
   <button *ngIf="installable" mat-icon-button (click)="installClicked()">
     <mat-icon [fontIcon]="isMobile ? 'install_mobile' : 'install_desktop'" />
   </button>
-  <button mat-icon-button (click)="settingsClicked()">
-    <mat-icon fontIcon="settings" />
+  <button mat-icon-button (click)="editClicked()">
+    <mat-icon fontIcon="edit" />
   </button>
   <button mat-icon-button (click)="shareClicked()">
     <mat-icon fontIcon="share" />
@@ -21,7 +21,7 @@
       <h3 matSubheader i18n>Your Currencies</h3>
       <mat-list-item *ngFor="let c of tmpCurrencyList" class="currencyShowBox">
         <app-currency
-          [name]="c"
+          [code]="c"
           [rate]="currencyRate[c]"
           [(valueUSD)]="valueUSD"
           [(empty)]="empty"
@@ -32,7 +32,7 @@
     </ng-container>
     <mat-list-item *ngFor="let c of currencyList" class="currencyShowBox">
       <app-currency
-        [name]="c"
+        [code]="c"
         [rate]="currencyRate[c]"
         [(valueUSD)]="valueUSD"
         [(empty)]="empty"

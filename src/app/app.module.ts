@@ -15,6 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app.component';
+import { CurrencyNamePipe } from './currency-name.pipe';
 import { CurrencyComponent } from './currency/currency.component';
 import { ListComponent } from './list/list.component';
 import { TimeIntervalPipe } from './time-interval.pipe';
@@ -35,6 +36,7 @@ const serviceWorkerModuleWithProvider = ServiceWorkerModule.register(
     CurrencyComponent,
     ListComponent,
     TimeIntervalPipe,
+    CurrencyNamePipe,
   ],
   imports: [
     BrowserModule,
