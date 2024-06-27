@@ -16,29 +16,25 @@
   <button i18n mat-button color="primary" (click)="clearClicked()">
     clear
   </button>
-  <mat-list>
-    <ng-container *ngIf="tmpCurrencyList.length">
-      <h3 matSubheader i18n>Your Currencies</h3>
-      <mat-list-item *ngFor="let c of tmpCurrencyList" class="currencyShowBox">
-        <app-currency
-          [code]="c"
-          [rate]="currencyRate[c]"
-          [(valueUSD)]="valueUSD"
-          [(empty)]="empty"
-        />
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-      <h3 mat-subheader i18n>More Currencies</h3>
-    </ng-container>
-    <mat-list-item *ngFor="let c of currencyList" class="currencyShowBox">
-      <app-currency
-        [code]="c"
-        [rate]="currencyRate[c]"
-        [(valueUSD)]="valueUSD"
-        [(empty)]="empty"
-      />
-    </mat-list-item>
-  </mat-list>
+  <ng-container *ngIf="tmpCurrencyList.length">
+    <h3 matSubheader i18n>Your Currencies</h3>
+    <app-currency
+      *ngFor="let c of tmpCurrencyList"
+      [code]="c"
+      [rate]="currencyRate[c]"
+      [(valueUSD)]="valueUSD"
+      [(empty)]="empty"
+    />
+    <mat-divider [inset]="true"></mat-divider>
+    <h3 mat-subheader i18n>More Currencies</h3>
+  </ng-container>
+  <app-currency
+    *ngFor="let c of currencyList"
+    [code]="c"
+    [rate]="currencyRate[c]"
+    [(valueUSD)]="valueUSD"
+    [(empty)]="empty"
+  />
   <button
     *ngIf="tmpCurrencyList.length + currencyList.length >= 10"
     i18n

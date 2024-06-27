@@ -1,4 +1,4 @@
-<mat-form-field class="field">
+<mat-form-field [floatLabel]="'always'" class="field">
   <mat-label>{{ code | currencyName | async }}</mat-label>
   <span matPrefix>&nbsp; {{ code }} &nbsp;</span>
   <input
