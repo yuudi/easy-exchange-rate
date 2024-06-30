@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { AddCurrencyComponent } from './add-currency/add-currency.component';
 import { ListComponent } from './list/list.component';
 
 type RATES = { [key: string]: number };
@@ -26,9 +29,11 @@ export class AppComponent implements OnInit {
   lastUpdated = 0;
   installable = false;
   isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  installFunc = () => {};
+  private installFunc = () => {};
 
   constructor(
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
     private http: HttpClient,
     private dialog: MatDialog,
   ) {
@@ -40,6 +45,13 @@ export class AppComponent implements OnInit {
         e.prompt();
       };
     });
+
+    iconRegistry.addSvgIcon(
+      'github',
+      sanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/github-mark-white.svg',
+      ),
+    );
   }
   ngOnInit() {
     // Load currency list and exchange rate from localStorage
@@ -129,10 +141,6 @@ export class AppComponent implements OnInit {
   valueChanged(value: number) {
     this.valueUSD = value;
   }
-  clearClicked() {
-    this.valueUSD = 100;
-    this.empty = true;
-  }
   installClicked() {
     this.installFunc();
   }
@@ -140,13 +148,12 @@ export class AppComponent implements OnInit {
     const dialog = this.dialog.open(ListComponent, {
       data: {
         list: this.currencyList.slice(), // shallow copy
-        available: Object.keys(this.currencyRate),
       },
       width: '100%',
       maxWidth: '30em',
     });
     dialog.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
+      if (result) {
         this.currencyList = result;
         localStorage.setItem('CURRENCY', JSON.stringify(result));
       }
@@ -156,6 +163,22 @@ export class AppComponent implements OnInit {
     navigator.share({
       title: 'Easy Exchange Rate',
       url: window.location.href,
+    });
+  }
+  addCurrencyClicked() {
+    const dialog = this.dialog.open(AddCurrencyComponent, {
+      data: {
+        list: this.currencyList,
+        available: Object.keys(this.currencyRate),
+      },
+      width: '100%',
+      maxWidth: '30em',
+    });
+    dialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.currencyList.push(result);
+        localStorage.setItem('CURRENCY', JSON.stringify(this.currencyList));
+      }
     });
   }
 }

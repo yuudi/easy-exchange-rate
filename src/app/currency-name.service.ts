@@ -54,6 +54,6 @@ export class CurrencyNameService {
   }
 
   public getName(currencyCode: string): Promise<string> {
-    return this.names.then((names) => names.get(currencyCode) ?? currencyCode);
+    return this.names.then((names) => names.get(currencyCode) || currencyCode);
   }
 }

@@ -4,18 +4,19 @@
   <button *ngIf="installable" mat-icon-button (click)="installClicked()">
     <mat-icon [fontIcon]="isMobile ? 'install_mobile' : 'install_desktop'" />
   </button>
-  <button mat-icon-button (click)="editClicked()">
-    <mat-icon fontIcon="edit" />
-  </button>
   <button mat-icon-button (click)="shareClicked()">
     <mat-icon fontIcon="share" />
   </button>
+  <a
+    mat-icon-button
+    href="https://github.com/yuudi/easy-exchange-rate"
+    target="_blank"
+  >
+    <mat-icon svgIcon="github" />
+  </a>
 </mat-toolbar>
 <div class="main">
   <div i18n>updated {{ lastUpdated | timeInterval }}</div>
-  <button i18n mat-button color="primary" (click)="clearClicked()">
-    clear
-  </button>
   <ng-container *ngIf="tmpCurrencyList.length">
     <h3 matSubheader i18n>Your Currencies</h3>
     <app-currency
@@ -40,12 +41,25 @@
     [show_close]="focus === i"
   />
   <button
-    *ngIf="tmpCurrencyList.length + currencyList.length >= 10"
     i18n
-    mat-button
+    mat-fab
+    extended
     color="primary"
-    (click)="clearClicked()"
+    class="action-button"
+    (click)="addCurrencyClicked()"
   >
-    clear
+    <mat-icon fontIcon="add"></mat-icon>
+    Add
+  </button>
+  <button
+    i18n
+    mat-fab
+    extended
+    color="primary"
+    class="action-button"
+    (click)="editClicked()"
+  >
+    <mat-icon fontIcon="edit"></mat-icon>
+    Edit
   </button>
 </div>

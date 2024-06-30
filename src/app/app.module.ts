@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule, isDevMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AddCurrencyComponent } from './add-currency/add-currency.component';
 import { AppComponent } from './app.component';
 import { CurrencyNamePipe } from './currency-name.pipe';
 import { CurrencyComponent } from './currency/currency.component';
@@ -34,6 +36,7 @@ const serviceWorkerModuleWithProvider = ServiceWorkerModule.register(
   declarations: [
     AppComponent,
     CurrencyComponent,
+    AddCurrencyComponent,
     ListComponent,
     TimeIntervalPipe,
     CurrencyNamePipe,
@@ -45,6 +48,7 @@ const serviceWorkerModuleWithProvider = ServiceWorkerModule.register(
     HttpClientModule,
     FormsModule,
     MatToolbarModule,
+    MatCardModule,
     MatListModule,
     MatFormFieldModule,
     MatMenuModule,

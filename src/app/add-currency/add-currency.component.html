@@ -1,0 +1,41 @@
+<h3 mat-dialog-title i18n>Add Currency</h3>
+<mat-form-field>
+  <mat-label i18n>Search</mat-label>
+  <input matInput type="text" [(ngModel)]="searchText" />
+  <button
+    *ngIf="searchText"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="searchText = ''"
+  >
+    <mat-icon fontIcon="close"></mat-icon>
+  </button>
+</mat-form-field>
+<mat-card class="currency-list">
+  <mat-selection-list multiple="true" #currency>
+    <ng-container *ngFor="let c of data.available">
+      <mat-list-option
+        *ngIf="
+          searchText === '' ||
+          textContains(searchText, c) ||
+          textContains(searchText, c | currencyName | async)
+        "
+        [disabled]="data.list.includes(c)"
+        [value]="c"
+      >
+        {{ c }} - {{ c | currencyName | async }}
+      </mat-list-option>
+    </ng-container>
+  </mat-selection-list>
+</mat-card>
+<div mat-dialog-actions>
+  <button
+    mat-button
+    [mat-dialog-close]="currency.selectedOptions.selected.at(0)?.value"
+    i18n
+  >
+    Add
+  </button>
+  <button mat-button [mat-dialog-close]="null" i18n>Cancel</button>
+</div>

@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class ListComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { list: string[]; available: string[] },
+    public data: { list: string[] },
   ) {}
 
   drop(event: CdkDragDrop<string[]>) {
