@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 import { AddCurrencyComponent } from './add-currency/add-currency.component';
 import { ListComponent } from './list/list.component';
 
@@ -82,7 +83,7 @@ export class AppComponent implements OnInit {
         .get<{
           updated: number;
           rates: RATES;
-        }>('https://api.exchange-rate.yuudi.dev/exchange-rate.json')
+        }>(environment.apiEndpoint)
         .subscribe({
           next: ({ updated, rates }) => {
             this.currencyRate = rates;
