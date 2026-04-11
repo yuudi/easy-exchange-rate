@@ -13,6 +13,11 @@
     "test": "ng test",
     "watch": "ng build --watch --configuration development"
   },
+  "overrides": {
+    "esbuild": "^0.25.8",
+    "vite": "^7.0.6",
+    "webpack-dev-server": "^5.2.2"
+  },
   "dependencies": {
     "@angular/animations": "^18.2.13",
     "@angular/cdk": "^18.2.13",
@@ -30,11 +35,6 @@
     "rxjs": "^7.8.2",
     "tslib": "^2.8.1",
     "zone.js": "^0.14.10"
-  },
-  "overrides": {
-    "esbuild": "^0.25.8",
-    "vite": "^7.0.6",
-    "webpack-dev-server": "^5.2.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.13",
