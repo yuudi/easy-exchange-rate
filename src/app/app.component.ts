@@ -60,10 +60,10 @@ export class AppComponent implements OnInit {
     if (currencyJson !== null) {
       this.currencyList = JSON.parse(currencyJson);
     } else {
-      this.currencyList = ['USD', 'EUR', 'JPY', 'CNY', 'KRW', 'HKD', 'TWD'];
+      this.currencyList = ['usd', 'eur', 'jpy', 'cny', 'krw', 'hkd', 'twd'];
     }
 
-    const rateJson = localStorage.getItem('RATES');
+    const rateJson = localStorage.getItem('RATES-USD');
     let rate: {
       updated: number;
       fetched: number;
@@ -77,23 +77,26 @@ export class AppComponent implements OnInit {
       rate = { updated: 0, fetched: 0, rates: {} };
     }
     const now = +new Date() / 1000;
-    // Fetch exchange rate if it is older than 1 day
-    if (now - rate.updated > 86400 && now - rate.fetched > 3600) {
+    // API updates daily at 02:30 UTC; compute the latest expected data date
+    if (
+      now - rate.updated > 24 * 60 * 60 + 2.5 * 60 * 60 &&
+      now - rate.fetched > 3600
+    ) {
       this.http
         .get<{
-          updated: number;
-          rates: RATES;
+          date: string;
+          usd: RATES;
         }>(environment.apiEndpoint)
         .subscribe({
-          next: ({ updated, rates }) => {
+          next: ({ date, usd: rates }) => {
             this.currencyRate = rates;
-            this.lastUpdated = updated;
+            this.lastUpdated = new Date(date).getTime() / 1000;
             rate = {
-              updated,
+              updated: this.lastUpdated,
               fetched: now,
               rates,
             };
-            localStorage.setItem('RATES', JSON.stringify(rate));
+            localStorage.setItem('RATES-USD', JSON.stringify(rate));
             this.getPresetValue();
           },
           error: () => {
